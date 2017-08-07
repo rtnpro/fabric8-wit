@@ -13,8 +13,9 @@ func NewGinEngine(appDB *gormapplication.GormDB, config *configuration.Configura
 	httpEngine.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
-	spacesResource := resource.NewSpacesResource(appDB)
+	spacesResource := resource.NewSpacesResource(appDB, config)
 	workitemsResource := resource.NewWorkItemsResource(appDB, config)
+	httpEngine.GET("/api/spaces", spacesResource.List)
 	httpEngine.GET("/api/spaces/:spaceID", spacesResource.GetByID)
 	httpEngine.GET("/api/spaces/:spaceID/workitems", workitemsResource.List)
 	return httpEngine
