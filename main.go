@@ -222,7 +222,8 @@ func main() {
 	// 	service.LogError("startup", "err", err)
 	// }
 
-	api.NewGinEngine(appDB, &config).Run(config.GetHTTPAddress())
+	// api.NewGinEngine(appDB, &config).Run(config.GetHTTPAddress())
+	api.NewAPI2goEngine(appDB, &config).Run(config.GetHTTPAddress())
 }
 
 func connectToDB(config configuration.ConfigurationData) *gorm.DB {

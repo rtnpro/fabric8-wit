@@ -1,5 +1,5 @@
-hash: 3485ba9192d8fa45e0ff6c2f460c338020158011ba2d3a3bce3e0b67d80fe6b2
-updated: 2017-07-31T13:11:16.984432662+02:00
+hash: 6dfcc2098a2f452d426c3be8ba76d03adb458dd2954b4d2bfbc42215a535552c
+updated: 2017-08-10T18:49:04.125328426+05:30
 imports:
 - name: github.com/andygrunwald/go-jira
   version: 9d1f282f93af41553ddb53b0116a8cdb75b4837a
@@ -109,6 +109,8 @@ imports:
   version: c1b9cf186e4bcd8e5d566ef43f2ae2dfe22dc34e
 - name: github.com/jinzhu/inflection
   version: 74387dc39a75e970e7a3ae6a3386b5bd2e5c5cff
+- name: github.com/jstemmer/go-junit-report
+  version: 15422cf504f9dc030386499a5c68053a38763e58
 - name: github.com/jteeuwen/go-bindata
   version: bbd0c6e271208dce66d8fda4bc536453cd27fc4a
   subpackages:
@@ -127,6 +129,8 @@ imports:
   version: 71608e2f6e76fd4da5b09a376aeec7a5c0b5edbc
 - name: github.com/magiconair/properties
   version: be5ece7dd465ab0765a9682137865547526d1dfb
+- name: github.com/manucorporat/sse
+  version: ee05b128a739a0fb76c7ebd3ae4810c1de808d6d
 - name: github.com/manveru/faker
   version: 717f7cf83fb78669bfab612749c2e8ff63d5be11
 - name: github.com/manyminds/api2go
@@ -134,6 +138,10 @@ imports:
   subpackages:
   - jsonapi
   - routing
+- name: github.com/manyminds/api2go-adapter
+  version: 13346badaea45fb3aa5665772f8cc57496b83d9f
+  subpackages:
+  - gingonic
 - name: github.com/mattn/go-colorable
   version: d228849504861217f796da67fae4f6e347643f15
 - name: github.com/mattn/go-isatty
@@ -164,8 +172,6 @@ imports:
   version: b024fc5ea0e34bc3f83d9941c8d60b0622bfaca4
 - name: github.com/russross/blackfriday
   version: 5f33e7b7878355cd2b7e6b8eefc48a5472c69f70
-- name: github.com/jstemmer/go-junit-report
-  version: 15422cf504f9dc030386499a5c68053a38763e58
 - name: github.com/satori/go.uuid
   version: b061729afc07e77a8aa4fad0a2fd840958f1942a
 - name: github.com/sergi/go-diff
@@ -213,7 +219,7 @@ imports:
 - name: github.com/zach-klippenstein/goregen
   version: 795b5e3961ea1912fde60af417ad85e86acc0d6a
 - name: golang.org/x/net
-  version: b1a2d6e8c8b5fc8f601ead62536f02a8e1b6217d
+  version: f315505cf3349909cdf013ea56690da34e96a451
   subpackages:
   - context
   - html

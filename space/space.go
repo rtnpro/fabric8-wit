@@ -26,16 +26,28 @@ var (
 // Space represents a Space on the domain and db layer
 type Space struct {
 	gormsupport.Lifecycle
-	ID          uuid.UUID
-	Version     int
-	Name        string
-	Description string
-	OwnerId     uuid.UUID `sql:"type:uuid"` // Belongs To Identity
+	ID          uuid.UUID `json:"id"`
+	Version     int       `json:"version"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	OwnerId     uuid.UUID `sql:"type:uuid" json:"-"` // Belongs To Identity
 }
 
 // Ensure Fields implements the Equaler interface
 var _ convert.Equaler = Space{}
 var _ convert.Equaler = (*Space)(nil)
+
+// GetID to satisfy jsonapi.MarshalIdentifier interface
+func (p Space) GetID() string {
+	return p.ID.String()
+}
+
+// SetID to satisfy jsonapi.MarshalIdentifier interface
+func (p Space) SetID(id string) error {
+	var err error
+	p.ID, err = uuid.FromString(id)
+	return err
+}
 
 // Equal returns true if two Space objects are equal; otherwise false is returned.
 func (p Space) Equal(u convert.Equaler) bool {

@@ -1,16 +1,11 @@
 package resource
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/fabric8-services/fabric8-wit/api/model"
 	"github.com/fabric8-services/fabric8-wit/application"
-	"github.com/fabric8-services/fabric8-wit/login"
-	"github.com/gin-gonic/gin"
-	"github.com/google/jsonapi"
-	errs "github.com/pkg/errors"
+	"github.com/manyminds/api2go"
+
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -34,6 +29,37 @@ func NewSpacesResource(db application.DB, config SpacesResourceConfiguration) Sp
 	}
 }
 
+// FindOne finds a Space item by ID
+func (res SpacesResource) FindOne(ID string, r api2go.Request) (api2go.Responder, error) {
+	ctx := r.Context
+	spaceID, err := uuid.FromString(ID)
+	if err != nil {
+		return &Response{}, api2go.NewHTTPError(err, "the space ID is not a valid UUID", http.StatusNotFound)
+	}
+	s, err := res.db.Spaces().Load(ctx, spaceID)
+	if err != nil {
+		return &Response{}, api2go.NewHTTPError(err, err.Error(), http.StatusInternalServerError)
+	}
+	return &Response{Res: s}, nil
+}
+
+// FindAll returns all Space items
+func (res SpacesResource) FindAll(r api2go.Request) (api2go.Responder, error) {
+	ctx := r.Context
+	/*
+		_, err := login.ContextIdentity(ctx)
+		if err != nil {
+			return Response{}, api2go.NewHTTPError(err, err.Error(), http.StatusUnauthorized)
+		}
+	*/
+	spaces, _, err := res.db.Spaces().List(ctx, nil, nil)
+	if err != nil {
+		return Response{}, api2go.NewHTTPError(err, err.Error(), http.StatusInternalServerError)
+	}
+	return Response{Res: spaces}, nil
+}
+
+/*
 //GetByID gets a space resource by its ID
 func (r SpacesResource) GetByID(ctx *gin.Context) {
 	spaceID, err := uuid.FromString(ctx.Param("spaceID"))
@@ -102,4 +128,4 @@ func (r SpacesResource) List(ctx *gin.Context) {
 	if err := json.NewEncoder(ctx.Writer).Encode(payload); err != nil {
 		ctx.AbortWithError(http.StatusInternalServerError, errs.Wrapf(err, "Error while fetching the spaces"))
 	}
-}
+}*/

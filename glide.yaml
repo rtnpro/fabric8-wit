@@ -80,7 +80,6 @@ import:
 - package: github.com/google/go-querystring
   subpackages:
   - query
-- package: github.com/spf13/viper
 - package: github.com/fsnotify/fsnotify
   version: ^1.3.1
 - package: github.com/hashicorp/hcl
@@ -113,3 +112,8 @@ import:
 - package: github.com/sergi/go-diff
   subpackages:
   - diffmatchpatch
+- package: github.com/manyminds/api2go-adapter
+  vcs: git
+  version: 13346badaea45fb3aa5665772f8cc57496b83d9f
+  subpackages:
+  - gingonic
