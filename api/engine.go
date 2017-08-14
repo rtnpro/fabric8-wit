@@ -14,7 +14,7 @@ import (
 func NewAPI2goEngine(appDB *gormapplication.GormDB, config *configuration.ConfigurationData) *gin.Engine {
 	httpEngine := gin.Default()
 	api := api2go.NewAPIWithRouting(
-		"",
+		"api",
 		api2go.NewStaticResolver("/"),
 		gingonic.New(httpEngine),
 	)

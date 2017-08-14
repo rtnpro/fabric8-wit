@@ -1,11 +1,6 @@
 package model
 
-import (
-	"fmt"
-
-	"github.com/fabric8-services/fabric8-wit/configuration"
-	"github.com/google/jsonapi"
-)
+/*
 
 //Space the Space type of resource to (un)marshall in the JSON-API requests/responses
 type Space struct {
@@ -48,3 +43,71 @@ func (s Space) JSONAPIRelationshipMeta(relation string) *jsonapi.Meta {
 	}
 	return nil
 }
+
+// Space represents a Space on the domain and db layer
+type Space struct {
+	gormsupport.Lifecycle
+	ID          uuid.UUID `json:"id"`
+	Version     int       `json:"version"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	OwnerId     uuid.UUID `sql:"type:uuid" json:"-"` // Belongs To Identity
+}
+
+// Ensure Fields implements the Equaler interface
+var _ convert.Equaler = Space{}
+var _ convert.Equaler = (*Space)(nil)
+
+// GetID to satisfy jsonapi.MarshalIdentifier interface
+func (p Space) GetID() string {
+	return p.ID.String()
+}
+
+// SetID to satisfy jsonapi.MarshalIdentifier interface
+func (p Space) SetID(id string) error {
+	var err error
+	p.ID, err = uuid.FromString(id)
+	return err
+}
+
+// Equal returns true if two Space objects are equal; otherwise false is returned.
+func (p Space) Equal(u convert.Equaler) bool {
+	other, ok := u.(Space)
+	if !ok {
+		return false
+	}
+	lfEqual := p.Lifecycle.Equal(other.Lifecycle)
+	if !lfEqual {
+		return false
+	}
+	if p.Version != other.Version {
+		return false
+	}
+	if p.Name != other.Name {
+		return false
+	}
+	if p.Description != other.Description {
+		return false
+	}
+	if !uuid.Equal(p.OwnerId, other.OwnerId) {
+		return false
+	}
+	return true
+}
+
+// GetETagData returns the field values to use to generate the ETag
+func (p Space) GetETagData() []interface{} {
+	return []interface{}{p.ID, p.Version}
+}
+
+// GetLastModified returns the last modification time
+func (p Space) GetLastModified() time.Time {
+	return p.UpdatedAt
+}
+
+// TableName overrides the table name settings in Gorm to force a specific table name
+// in the database.
+func (p Space) TableName() string {
+	return "spaces"
+}
+*/
