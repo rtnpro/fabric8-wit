@@ -28,7 +28,7 @@ var (
 // Space represents a Space on the domain and db layer
 type Space struct {
 	gormsupport.Lifecycle
-	ID          uuid.UUID `json:"id"`
+	ID          uuid.UUID `json:"-"`
 	Version     int       `json:"version"`
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
@@ -46,9 +46,11 @@ func (space Space) GetID() string {
 
 // SetID to satisfy jsonapi.MarshalIdentifier interface
 func (space Space) SetID(id string) error {
+	fmt.Println("setid id", id)
 	var err error
 	space.ID, err = uuid.FromString(id)
-	return err
+	fmt.Println("setid err", space.ID, err)
+	return nil
 }
 
 // GetName returns the entity type name for marshalling to json.

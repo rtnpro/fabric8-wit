@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/google/jsonapi"
+	"github.com/manyminds/api2go"
 )
 
 const (
@@ -106,4 +107,51 @@ func getPagingLinks(links *jsonapi.Links, path string, resultLen, offset, limit,
 	}
 	last = fmt.Sprintf("%s?page[offset]=%d&page[limit]=%d%s", path, lastStart, realLimit, format(additionalQuery))
 	return first, prev, next, last
+}
+
+// ParsePaging parses the paging parameters of a request and returns them in a normalized version (start, limit).
+func ParsePaging(r api2go.Request) (int, int, error) {
+	var number, size, offset, limit string
+
+	numberQuery, ok := r.QueryParams["page[number]"]
+	if ok {
+		number = numberQuery[0]
+	}
+	sizeQuery, ok := r.QueryParams["page[size]"]
+	if ok {
+		size = sizeQuery[0]
+	}
+	offsetQuery, ok := r.QueryParams["page[offset]"]
+	if ok {
+		offset = offsetQuery[0]
+	}
+	limitQuery, ok := r.QueryParams["page[limit]"]
+	if ok {
+		limit = limitQuery[0]
+	}
+
+	var resultStart int
+	var resultLimit int
+	if size != "" {
+		// PAGE NUMBER AND SIZE MODE
+		sizeI, err := strconv.Atoi(size)
+		if err != nil {
+			return -1, -1, err
+		}
+		resultStart, resultLimit = computePagingLimits(&number, &sizeI)
+	} else {
+		// PAGE OFFSET AND LIMIT MODE
+		limitI, err := strconv.Atoi(limit)
+		if err != nil {
+			return -1, -1, err
+		}
+		offsetI, err := strconv.Atoi(offset)
+		if err != nil {
+			return -1, -1, err
+		}
+		resultStart = offsetI
+		resultLimit = limitI
+	}
+
+	return resultStart, resultLimit, nil
 }
