@@ -5,6 +5,7 @@ import (
 	"github.com/fabric8-services/fabric8-wit/configuration"
 	"github.com/fabric8-services/fabric8-wit/gormapplication"
 	"github.com/fabric8-services/fabric8-wit/space"
+	"github.com/fabric8-services/fabric8-wit/workitem"
 	"github.com/gin-gonic/gin"
 	"github.com/manyminds/api2go"
 	"github.com/manyminds/api2go-adapter/gingonic"
@@ -19,7 +20,9 @@ func NewAPI2goEngine(appDB *gormapplication.GormDB, config *configuration.Config
 		gingonic.New(httpEngine),
 	)
 	spacesResource := resource.NewSpacesResource(appDB, config)
+	workItemsResource := resource.NewWorkItemsResource(appDB, config)
 	api.AddResource(space.Space{}, &spacesResource)
+	api.AddResource(workitem.WorkItem{}, &workItemsResource)
 	httpEngine.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
