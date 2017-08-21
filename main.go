@@ -97,7 +97,7 @@ func main() {
 	// identityRepository := account.NewIdentityRepository(db)
 	// userRepository := account.NewUserRepository(db)
 
-	var notificationChannel *notification.Channel = &notification.DevNullChannel{}
+	var notificationChannel notification.Channel = &notification.DevNullChannel{}
 	if config.GetNotificationServiceURL() != "" {
 		log.Logger().Infof("Enabling Notification service %v", config.GetNotificationServiceURL())
 		channel, err := notification.NewServiceChannel(config)
@@ -107,7 +107,7 @@ func main() {
 				"url": config.GetNotificationServiceURL(),
 			}, "failed to parse notification service url")
 		}
-		notificationChannel = &channel
+		notificationChannel = channel
 	}
 
 	appDB := gormapplication.NewGormDB(db)
