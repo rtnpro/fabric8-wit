@@ -10,6 +10,7 @@ import (
 
 	"context"
 
+	"github.com/gin-gonic/gin"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
 	"github.com/goadesign/goa/middleware/gzip"
@@ -232,16 +233,21 @@ func main() {
 	http.Handle("/", http.FileServer(assetFS()))
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 
-	// Start http
-	if err := http.ListenAndServe(config.GetHTTPAddress(), nil); err != nil {
-		log.Error(nil, map[string]interface{}{
-			"addr": config.GetHTTPAddress(),
-			"err":  err,
-		}, "unable to connect to server")
-		service.LogError("startup", "err", err)
-	}
+	/*
+		// Start http
+		if err := http.ListenAndServe(config.GetHTTPAddress(), nil); err != nil {
+			log.Error(nil, map[string]interface{}{
+				"addr": config.GetHTTPAddress(),
+				"err":  err,
+			}, "unable to connect to server")
+			service.LogError("startup", "err", err)
+		}*/
 
-	// api.NewGinEngine(appDB, notificationChannel, config).Run(config.GetHTTPAddress())
+	engine := gin.Default()
+	//engine := api.NewGinEngine(appDB, notificationChannel, config)
+	engine.Any("/api/", gin.WrapH(service.Mux))
+	engine.GET("/favicon.ico", gin.WrapH(http.NotFoundHandler()))
+	engine.Run(config.GetHTTPAddress())
 }
 
 func connectToDB(config *configuration.ConfigurationData) *gorm.DB {
