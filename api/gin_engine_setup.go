@@ -40,7 +40,7 @@ func NewGinEngine(appDB *gormapplication.GormDB, notificationChannel notificatio
 	// to be handled by goa
 	httpEngine.NoRoute(func(c *gin.Context) {
 		if strings.HasPrefix(c.Request.URL.Path, "/api/") {
-			c.Redirect(http.StatusTemporaryRedirect, strings.Replace(c.Request.URL.Path, "/api/", "/legacyapi/", 1))
+			c.Redirect(http.StatusTemporaryRedirect, strings.Replace(c.Request.URL.RequestURI(), "/api/", "/legacyapi/", 1))
 		} else {
 			c.String(http.StatusNotFound, "Not found!")
 		}
